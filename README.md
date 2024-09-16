@@ -4,7 +4,8 @@ This repository contains an implementation of a two-region web application archi
 
 ## Overview
 
-![image](https://github.com/user-attachments/assets/3faf1293-a5a3-4b1f-a232-fab3cd2bffe0)
+![image](https://github.com/user-attachments/assets/466a2c2e-28e5-41d9-9f57-83021fb0864f)
+
 
 
 
