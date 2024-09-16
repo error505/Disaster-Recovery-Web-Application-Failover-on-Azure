@@ -3,7 +3,8 @@
 param location string = resourceGroup().location
 @description('Secondary location for failover.')
 param locationSecondary string = 'eastus2'
-param cosmosDbAccountName string = 'twoRegionCosmosDbAccount'
+@description('Name for the primary Azure Cosmos DB account.')
+param cosmosDbAccountName string = 'twoRegionCosmosDb'
 param cosmosDbPrimaryRegionName string = 'twoRegionCosmosDbPrimary'
 param appServicePlanName string = 'twoRegionAppServicePlan'
 param apiAppServicePrimaryName string = 'twoRegionAppServicePrimary'
@@ -22,7 +23,7 @@ param storageAccountPrimaryName string = 'tworegionstorageprimary'
 param storageAccountSecondaryName string = 'tworegionstoragesecondary'
 
 // Azure Cosmos DB Account
-resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-10-15' = {
+resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2024-05-15' = {
   name: cosmosDbAccountName
   location: location
   properties: {
@@ -40,14 +41,15 @@ resource cosmosDbAccount 'Microsoft.DocumentDB/databaseAccounts@2021-10-15' = {
       }
     ]
     consistencyPolicy: {
-      defaultConsistencyLevel: 'Session'
+      defaultConsistencyLevel: 'Session' // Adjust based on your consistency requirements
     }
     enableAutomaticFailover: true
+    enableMultipleWriteLocations: true // Enables multi-region writes
   }
 }
 
 // Cosmos DB Database and Container (Primary and Secondary)
-resource cosmosDbPrimary 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2021-10-15' = {
+resource cosmosDbPrimary 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@2024-05-15' = {
   parent: cosmosDbAccount
   name: cosmosDbPrimaryRegionName
   properties: {
@@ -57,7 +59,7 @@ resource cosmosDbPrimary 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases@202
   }
 }
 
-resource cosmosDbContainerPrimary 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2021-10-15' = {
+resource cosmosDbContainerPrimary 'Microsoft.DocumentDB/databaseAccounts/sqlDatabases/containers@2024-05-15' = {
   parent: cosmosDbPrimary
   name: 'twoRegionContainer'
   properties: {
@@ -197,6 +199,8 @@ resource redisCachePrimary 'Microsoft.Cache/redis@2024-04-01-preview' = {
       family: 'C'
       capacity: 1
     }
+    enableNonSslPort: false
+    minimumTlsVersion: '1.2'
   }
 }
 
@@ -209,6 +213,8 @@ resource redisCacheSecondary 'Microsoft.Cache/redis@2024-04-01-preview' = {
       family: 'C'
       capacity: 1
     }
+    enableNonSslPort: false
+    minimumTlsVersion: '1.2'
   }
 }
 

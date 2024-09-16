@@ -40,6 +40,11 @@ graph TD
     F2 --> H2[Azure Cache for Redis - Secondary]
     
     C --> I[Azure Function - Failover Monitor]
+    I --> F1
+    I --> F2
+
+    H1 <-- Replicates --> H2
+    G1 <-- Multi-Region Replication --> G2
   end
 
   classDef primary fill:#6aa84f,stroke:#333,stroke-width:2px;
@@ -47,6 +52,16 @@ graph TD
   class D1,E1,F1,G1,H1 primary;
   class D2,E2,F2,G2,H2 secondary;
 ```
+
+- **Azure Cosmos DB Replication**: 
+  - The line labeled **`Multi-Region Replication`** between **`G1[Azure Cosmos DB - Primary]`** and **`G2[Azure Cosmos DB - Secondary]`** indicates the native multi-region replication enabled by Azure Cosmos DB.
+  
+- **Azure Cache for Redis Replication**:
+  - The line labeled **`Replicates`** between **`H1[Azure Cache for Redis - Primary]`** and **`H2[Azure Cache for Redis - Secondary]`** represents the custom replication mechanism that uses an Azure Function or another service to replicate data from the primary Redis cache to the secondary.
+
+- **Azure Functions and App Services**: 
+  - **`Azure Function - Background Task`** processes tasks from the Azure Queue Storage in both regions and interacts with Cosmos DB and Redis Cache.
+  - **`Azure Function - Failover Monitor`** checks the health of the primary region and initiates failover if necessary, interacting with both background task functions.
 
 ## How to Use the Services
 
