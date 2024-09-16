@@ -1,0 +1,11 @@
+.vs/CQRS-Pattern-Azure/config/applicationhost.config
+.vs/
+app-service-api/bin/Debug/net8.0/app-service-api.pdb
+app-service-api/bin/
+app-service-api/obj/Debug/net8.0/app-service-api.csproj.CoreCompileInputs.cache
+app-service-api/obj/app-service-api.csproj.nuget.g.targets
+app-service-api/obj/Debug/net8.0/.NETCoreApp,Version=v8.0.AssemblyAttributes.cs
+app-service-api/obj/
+update-processor/.vscode/
+query-handler/.vscode/extensions.json
+command-handler/.vscode/

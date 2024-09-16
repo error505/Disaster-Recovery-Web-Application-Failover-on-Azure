@@ -1,0 +1,40 @@
+name: Deploy Azure Functions
+
+on:
+  workflow_dispatch:
+  push:
+    branches:
+      - main
+
+jobs:
+  build-and-deploy-functions:
+    runs-on: ubuntu-latest
+
+    steps:
+    - name: Checkout code
+      uses: actions/checkout@v4
+
+    - name: Setup .NET
+      uses: actions/setup-dotnet@v4
+      with:
+        dotnet-version: '8.0.x'
+
+    - name: Build the Function App
+      run: dotnet build --configuration Release function-app/FunctionApp.csproj
+
+    - name: Publish the Function App
+      run: dotnet publish --configuration Release -o ./publish function-app/FunctionApp.csproj
+
+    - name: Deploy Background Task Function
+      uses: azure/functions-action@v1
+      with:
+        app-name: ${{ secrets.AZURE_FUNCTION_APP_NAME_RETRY }}
+        package: ./publish
+        publish-profile: ${{ secrets.AZURE_FUNCTION_APP_PUBLISH_PROFILE_RETRY }}
+
+    - name: Deploy Failover Function
+      uses: azure/functions-action@v1
+      with:
+        app-name: ${{ secrets.AZURE_FUNCTION_APP_NAME_FAILOVER }}
+        package: ./publish
+        publish-profile: ${{ secrets.AZURE_FUNCTION_APP_PUBLISH_PROFILE_FAILOVER }}
