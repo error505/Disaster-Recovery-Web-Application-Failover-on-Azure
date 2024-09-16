@@ -4,6 +4,9 @@ This repository contains an implementation of a two-region web application archi
 
 ## Overview
 
+![image](https://github.com/user-attachments/assets/f3478265-2e8c-4873-8c3f-79d4b6bb9f74)
+
+
 The main components of this architecture include:
 
 - **Azure Front Door**: Provides global load balancing and secure, fast, and reliable content delivery with automatic failover.
