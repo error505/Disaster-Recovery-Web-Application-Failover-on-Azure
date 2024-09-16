@@ -1,4 +1,4 @@
-# Two-Region Web Application with Table Storage Failover
+# Disaster Recovery Web Application with Cosmos DB Failover
 
 This repository contains an implementation of a two-region web application architecture on Azure. The architecture ensures high availability and disaster recovery by utilizing multiple Azure regions, Azure Front Door, Cosmos DB, Azure Queue Storage, Azure Functions, Azure Cache for Redis, and more.
 
